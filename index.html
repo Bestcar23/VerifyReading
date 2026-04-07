@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>세화고 독서가 인증 여부 확인</title>
+  <meta name="description" content="세화고 독서가 인증 여부를 학번과 성명으로 확인하는 웹앱입니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <main class="page">
+    <section class="hero-card">
+      <div class="hero-top">
+        <div>
+          <p class="eyebrow">SEHWA HIGH SCHOOL</p>
+          <h1>세화고 독서가 인증 여부 확인</h1>
+          <p class="subtitle">학번과 성명을 입력하면 인증 결과를 바로 확인할 수 있습니다.</p>
+        </div>
+        <div class="hero-badge">독서 인증</div>
+      </div>
+
+      <form id="lookupForm" class="lookup-form" autocomplete="off">
+        <div class="field-grid">
+          <label class="field">
+            <span>학번</span>
+            <input id="studentId" name="studentId" type="text" inputmode="numeric" placeholder="예: 10101" maxlength="20">
+          </label>
+          <label class="field">
+            <span>성명</span>
+            <input id="name" name="name" type="text" placeholder="예: 홍길동" maxlength="30">
+          </label>
+        </div>
+
+        <button id="submitButton" class="submit-button" type="submit">
+          <span>인증 결과 조회</span>
+        </button>
+      </form>
+
+      <div id="statusMessage" class="status-message" aria-live="polite"></div>
+
+      <section id="resultPanel" class="result-panel" hidden>
+        <div id="resultTone" class="result-tone"></div>
+        <div class="result-content">
+          <p class="result-label">조회 결과</p>
+          <h2 id="resultValue" class="result-value"></h2>
+          <p id="resultDescription" class="result-description"></p>
+          <div id="identityChip" class="identity-chip"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="info-strip">
+      <article>
+        <h3>안내</h3>
+        <p>입력한 정보가 시트의 학번(D열)과 성명(E열)과 모두 일치할 때 인증 결과(F열)가 표시됩니다.</p>
+      </article>
+      <article>
+        <h3>표시 방식</h3>
+        <p>시트에 입력된 값이 <strong>충족</strong>, <strong>미충족</strong> 또는 기타 상태여도 그대로 보여줍니다.</p>
+      </article>
+    </section>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
