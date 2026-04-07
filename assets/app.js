@@ -34,7 +34,22 @@ function showResult(data) {
   resultChip.textContent = data.found ? (data.result || '미입력') : '조회 결과 없음';
   resultStudentId.textContent = data.studentId || studentIdInput.value.trim() || '-';
   resultName.textContent = data.name || nameInput.value.trim() || '-';
-  resultMessage.textContent = data.message || '조회 결과를 불러왔습니다.';
+
+  if (data.found) {
+    const resultText = escapeHtml(data.result || '미입력');
+    resultMessage.innerHTML = `인증 결과는 <span class="result-emphasis">${resultText}</span>입니다.`;
+  } else {
+    resultMessage.textContent = data.message || '조회 결과를 불러왔습니다.';
+  }
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function runJsonpRequest(url) {

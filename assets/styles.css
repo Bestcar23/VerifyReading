@@ -93,6 +93,7 @@ h1 {
   font-size: clamp(28px, 4vw, 36px);
   line-height: 1.25;
   letter-spacing: -0.03em;
+  text-align: center;
 }
 
 .hero-desc {
@@ -100,6 +101,7 @@ h1 {
   color: var(--muted);
   font-size: 15px;
   line-height: 1.7;
+  text-align: center;
 }
 
 .search-form {
@@ -268,6 +270,23 @@ input:focus {
 .result-message {
   font-size: 16px;
   font-weight: 700;
+}
+
+.result-emphasis {
+  display: inline-block;
+  margin: 0 2px;
+  font-size: 1.38em;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.result-card.success .result-emphasis {
+  color: var(--success-text);
+}
+
+.result-card.fail .result-emphasis {
+  color: var(--danger-text);
 }
 
 @media (max-width: 640px) {
