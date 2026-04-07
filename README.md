@@ -1,31 +1,71 @@
 # 세화고 독서가 인증 여부 확인
 
-정적 배포용 웹앱입니다. GitHub에 업로드한 뒤 Vercel에서 바로 배포할 수 있습니다.
+구글 시트의 `Sheet1`에 저장된 정보를 바탕으로 학생의 **학번**과 **성명**을 입력하면 인증 결과를 확인할 수 있는 정적 웹앱입니다.
 
-## 포함 파일
-- `index.html` : 메인 화면
-- `styles.css` : 디자인
-- `app.js` : 조회 로직
-- `config.js` : Apps Script 웹앱 URL 설정
-- `Code.gs` : 구글 시트에 넣을 Apps Script
-- `vercel.json` : Vercel 정적 배포 설정
+## 파일 구조
 
-## 현재 반영된 Apps Script URL
-- `config.js`에 실제 URL이 이미 입력되어 있습니다.
+```text
+.
+├─ index.html
+├─ README.md
+├─ vercel.json
+└─ assets
+   ├─ app.js
+   ├─ logo.svg
+   └─ styles.css
+```
+
+## 반영된 Apps Script 웹앱 URL
+
+`assets/app.js`에 아래 URL이 반영되어 있습니다.
+
+```text
+https://script.google.com/macros/s/AKfycbyMf1rP8Zf1SWZQbWCox0-KMznlM4eWMSxJMSEaJTrfh7JxjzSW1yJyHmUxeCQyduUa/exec
+```
+
+## 배포 방법
+
+### 1. GitHub 업로드
+루트에 있는 파일과 `assets` 폴더를 그대로 GitHub 저장소에 업로드합니다.
+
+### 2. Vercel 배포
+Vercel에서 해당 GitHub 저장소를 Import 합니다.
+
+### 3. Framework Preset
+별도 프레임워크를 선택하지 않아도 됩니다.
+
+### 4. 배포
+`vercel.json`이 포함되어 있으므로 정적 사이트로 바로 배포할 수 있습니다.
+
+## 화면 동작 방식
+
+1. 사용자가 학번과 성명을 입력합니다.
+2. 정적 웹앱이 Apps Script 웹앱으로 요청을 보냅니다.
+3. 시트의 D열(학번), E열(성명), F열(인증 결과)을 조회합니다.
+4. 일치하는 행이 있으면 F열 값을 화면에 보여줍니다.
 
 ## 구글 시트 구조
+
 - 시트 이름: `Sheet1`
 - D열: 학번
 - E열: 성명
-- F열: 인증 결과
+- F열: 인증 결과 (`충족`, `미충족` 등)
+- 1행: 헤더
+- 2행부터 데이터
 
-## 배포 방법
-1. 구글 시트에서 `확장 프로그램 > Apps Script`로 이동합니다.
-2. `Code.gs`를 붙여넣고 저장합니다.
-3. `배포 > 새 배포 > 웹앱`으로 배포합니다.
-4. 접근 권한은 필요한 범위로 설정합니다.
-5. 정적 파일 세트를 GitHub 저장소에 업로드합니다.
-6. Vercel에서 저장소를 Import하여 배포합니다.
+## 꼭 확인할 사항
 
-## 참고
-정적 웹앱에서 Apps Script를 안정적으로 호출할 수 있도록 `callback` 파라미터를 사용하는 JSONP 방식도 지원하도록 `Code.gs`가 작성되어 있습니다.
+정적 웹앱이 정상적으로 동작하려면 Apps Script 쪽 `Code.gs`가 **JSONP callback 파라미터를 처리하는 버전**으로 배포되어 있어야 합니다.
+
+즉, Apps Script의 `doGet(e)`에서 아래와 같은 형태를 지원해야 합니다.
+
+```javascript
+const callback = e.parameter.callback || '';
+if (callback) {
+  return ContentService
+    .createTextOutput(`${callback}(${JSON.stringify(result)})`)
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
+```
+
+이 부분이 없으면 브라우저에서 “웹 앱에 연결할 수 없음” 또는 응답 처리 오류가 발생할 수 있습니다.
